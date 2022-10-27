@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, flash, session, redirect, jso
 from jinja2 import StrictUndefined
 from model import connect_to_db, db
 import crud
-import requests
+# import requests
 import os
 
 app = Flask(__name__)
@@ -18,10 +18,23 @@ def homepage():
     return render_template("index.html")
 
 
+@app.route("/login", methods=["POST"])
+def login_user():
+    user_name = request.form.get("user_name")
+    user = crud.get_user_by_user_name(user_name)
+    if not user:
+        user = crud.create_user(user_name)
+        db.session.add(user)
+        db.session.commit()
+        session["user_name"] = user.user_name
+    else:
+
+        return redirect("/appointments")
 
 
-
-
+@app.route("/appointments")
+def show_slots():
+    return render_template("appointments.html")
 
 
 

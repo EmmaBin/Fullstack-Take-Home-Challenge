@@ -42,7 +42,7 @@ def connect_to_db(flask_app, db_uri="postgresql:///appointments", echo=True):
     print("Connected to the db!")
 
 if __name__ == '__main__':
-    
+    print("create all")
     from server import app
     connect_to_db(app)
     db.create_all()
